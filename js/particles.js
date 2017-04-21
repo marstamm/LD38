@@ -57,6 +57,7 @@ function particle(opts)
     {
       this.alive = false;
       this.gameElement.style.display = 'none';
+      this.gameElement.DOMElement.parentNode.removeChild(this.gameElement.DOMElement);
     }
     this.x = this.startpos[0];
     this.y = this.startpos[1];

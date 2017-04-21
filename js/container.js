@@ -36,7 +36,7 @@ function aGame()
 
   this.registerGameElement = function(anElement)
   {
-    console.log(this);
+    //console.log(this);
 
     this.gameElements.push(anElement);
   }

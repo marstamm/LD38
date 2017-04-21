@@ -26,6 +26,12 @@ function startgame()
   };
 
   var pgen = aParticleGenerator({x:50,y:100, r:10, duration: 1});
+  var aCamera = new camera({
+    center: player,
+    follow: true,
+    container: document.getElementById('game')
+  });
   console.log(player);
   game.anim();
+
 }

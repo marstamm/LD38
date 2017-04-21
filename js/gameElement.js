@@ -30,8 +30,11 @@ function aGameElement(opts)
   this.place = function()
   {
     //console.log("placed");
-    this.DOMElement.style.left = this.x + this.DOMElement.parentNode.style.left + "px";
-    this.DOMElement.style.top  = this.y + this.DOMElement.parentNode.style.top + "px";
+    if(this.DOMElement.parentNode != null)
+    {
+      this.DOMElement.style.left = this.x + this.DOMElement.parentNode.style.left + "px";
+      this.DOMElement.style.top  = this.y + this.DOMElement.parentNode.style.top + "px";
+    }
   }
 
   this.DOMElement.style.width = this.width;
