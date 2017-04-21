@@ -25,6 +25,7 @@ function aGameElement(opts)
   this.accSpeed = opts.accelerationSpeed || 1;
   this._currentspeedx = 0;
   this._currentspeedy = 0;
+  this.age = 0;
 
   this.place = function()
   {
@@ -43,6 +44,7 @@ function aGameElement(opts)
 
   this.update = function()
   {
+    this.age++;
     this.canMove = true;
     var oldpos = [this.x, this.y];
     this.move();
@@ -80,55 +82,108 @@ function aGameElement(opts)
 aGameElement.prototype.move = function()
 {
   //console.log(this);
-  if(!this.acceleration)
-  {
-    this.y -= this.keypressed['up'] ? this.movementSpeed : 0;
-    this.y += this.keypressed['down'] ? this.movementSpeed : 0;
-    this.x -= this.keypressed['left'] ? this.movementSpeed : 0;
-    this.x += this.keypressed['right'] ? this.movementSpeed : 0;
-  }
-  else {
+  if(this.acceleration) {
     //accelerate if key is pressed
-    this._currentspeedy -= this.keypressed['up'] ? this.accSpeed : 0;
-    this._currentspeedy += this.keypressed['down'] ? this.accSpeed : 0;
-    this._currentspeedx -= this.keypressed['left'] ? this.accSpeed : 0;
-    this._currentspeedx += this.keypressed['right'] ? this.accSpeed : 0;
-
-    //decelerate if no key is pressed
-    var deccelerationSpeed = this.accSpeed/2;
-    if(!(this.keypressed['up'] || this.keypressed['down']))
-    {
-      if(this._currentspeedy > 0)
-      {
-        this._currentspeedy = Math.max(0, this._currentspeedy - deccelerationSpeed);
-      }
-      if(this._currentspeedy < 0)
-      {
-        this._currentspeedy = Math.min(0, this._currentspeedy + deccelerationSpeed);
-      }
-    }
-    if(!(this.keypressed['left'] || this.keypressed['right']))
-    {
-      if(this._currentspeedx > 0)
-      {
-        this._currentspeedx = Math.max(0, this._currentspeedx - deccelerationSpeed);
-      }
-      if(this._currentspeedx < 0)
-      {
-        this._currentspeedx = Math.min(0, this._currentspeedx + deccelerationSpeed);
-      }
-    }
-
-    //Clamp speed
-    this._currentspeedy = Math.max(-this.movementSpeed, Math.min(this._currentspeedy, this.movementSpeed))
-    this._currentspeedx = Math.max(-this.movementSpeed, Math.min(this._currentspeedx, this.movementSpeed))
-
-    //Acutally move
-    this.y += this._currentspeedy;
-    this.x += this._currentspeedx;
-    //console.log(this._currentspeedx)
+    this.accelerationMovement();
+    return;
+  }
+  if(this.threeway)
+  {
+    this.threewayMovement();
   }
 
+  //default mouse Handling
+  this.y -= this.keypressed['up'] ? this.movementSpeed : 0;
+  this.y += this.keypressed['down'] ? this.movementSpeed : 0;
+  this.x -= this.keypressed['left'] ? this.movementSpeed : 0;
+  this.x += this.keypressed['right'] ? this.movementSpeed : 0;
+}
+
+aGameElement.prototype.threewayMovement = function()
+{
+  //ToDo.
+  this._currentspeedy -= this.keypressed['up'] ? this.accSpeed : 0;
+  this._currentspeedy += this.keypressed['down'] ? this.accSpeed : 0;
+  this._currentspeedx -= this.keypressed['left'] ? this.accSpeed : 0;
+  this._currentspeedx += this.keypressed['right'] ? this.accSpeed : 0;
+
+  //decelerate if no key is pressed
+  var deccelerationSpeed = this.accSpeed/2;
+  if(!(this.keypressed['up'] || this.keypressed['down']))
+  {
+    if(this._currentspeedy > 0)
+    {
+      this._currentspeedy = Math.max(0, this._currentspeedy - deccelerationSpeed);
+    }
+    if(this._currentspeedy < 0)
+    {
+      this._currentspeedy = Math.min(0, this._currentspeedy + deccelerationSpeed);
+    }
+  }
+  if(!(this.keypressed['left'] || this.keypressed['right']))
+  {
+    if(this._currentspeedx > 0)
+    {
+      this._currentspeedx = Math.max(0, this._currentspeedx - deccelerationSpeed);
+    }
+    if(this._currentspeedx < 0)
+    {
+      this._currentspeedx = Math.min(0, this._currentspeedx + deccelerationSpeed);
+    }
+  }
+
+  //Clamp speed
+  this._currentspeedy = Math.max(-this.movementSpeed, Math.min(this._currentspeedy, this.movementSpeed))
+  this._currentspeedx = Math.max(-this.movementSpeed, Math.min(this._currentspeedx, this.movementSpeed))
+
+  //Acutally move
+  this.y += this._currentspeedy;
+  this.x += this._currentspeedx;
+  //console.log(this._currentspeedx)
+  return;
+}
+
+aGameElement.prototype.accelerationMovement = function()
+{
+  this._currentspeedy -= this.keypressed['up'] ? this.accSpeed : 0;
+  this._currentspeedy += this.keypressed['down'] ? this.accSpeed : 0;
+  this._currentspeedx -= this.keypressed['left'] ? this.accSpeed : 0;
+  this._currentspeedx += this.keypressed['right'] ? this.accSpeed : 0;
+
+  //decelerate if no key is pressed
+  var deccelerationSpeed = this.accSpeed/2;
+  if(!(this.keypressed['up'] || this.keypressed['down']))
+  {
+    if(this._currentspeedy > 0)
+    {
+      this._currentspeedy = Math.max(0, this._currentspeedy - deccelerationSpeed);
+    }
+    if(this._currentspeedy < 0)
+    {
+      this._currentspeedy = Math.min(0, this._currentspeedy + deccelerationSpeed);
+    }
+  }
+  if(!(this.keypressed['left'] || this.keypressed['right']))
+  {
+    if(this._currentspeedx > 0)
+    {
+      this._currentspeedx = Math.max(0, this._currentspeedx - deccelerationSpeed);
+    }
+    if(this._currentspeedx < 0)
+    {
+      this._currentspeedx = Math.min(0, this._currentspeedx + deccelerationSpeed);
+    }
+  }
+
+  //Clamp speed
+  this._currentspeedy = Math.max(-this.movementSpeed, Math.min(this._currentspeedy, this.movementSpeed))
+  this._currentspeedx = Math.max(-this.movementSpeed, Math.min(this._currentspeedx, this.movementSpeed))
+
+  //Acutally move
+  this.y += this._currentspeedy;
+  this.x += this._currentspeedx;
+  //console.log(this._currentspeedx)
+  return;
 }
 
 aGameElement.prototype.handleKeyDown = function(key)
@@ -157,6 +212,7 @@ aGameElement.prototype.checkCollision = function(anotherGameElement)
 
   if(this.handlesCollision)
   {
+    //TODO: Check form wich side the object collides
     if (this.x < anotherGameElement.x + anotherGameElement.width &&
      this.x + this.width > anotherGameElement.x &&
      this.y < anotherGameElement.y + anotherGameElement.height &&

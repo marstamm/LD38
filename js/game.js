@@ -23,7 +23,9 @@ function startgame()
       this.canMove = false;
     }
     this.style.backgroundColor = "green";
-  }
+  };
+
+  var pgen = aParticleGenerator({x:50,y:100, r:10, duration: 1});
   console.log(player);
   game.anim();
 }
