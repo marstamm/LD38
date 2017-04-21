@@ -12,6 +12,9 @@ function aGameElement(opts)
   this.x      = opts.x || 0;
   this.y      = opts.y || 0;
   this.color  = opts.color || 'cyan';
+
+  this.handlesCollision = opts.handlesCollision || false; //pls override handleCollision
+  this.colliders        = opts.colliders || [];
   this.handlesKeyDown = opts.handlesKeyDown || false;
   this.container = opts.container || document.getElementById('game');
   this.keypressed = {};
@@ -51,7 +54,17 @@ function aGameElement(opts)
       this.move();
       this.place();
     }
-  }
+    for (e in this.colliders)
+    {
+      this.checkCollision(this.colliders[e]);
+    }
+  };
+
+
+  this.addCollider = function(acollider)
+  {
+    this.colliders.push(acollider)
+  };
   /*this.init = function(width,height,x,y,container)
   {
     console.log("gameElement init");
@@ -115,7 +128,7 @@ aGameElement.prototype.move = function()
     //Acutally move
     this.y += this._currentspeedy;
     this.x += this._currentspeedx;
-    console.log(this._currentspeedx)
+    //console.log(this._currentspeedx)
   }
 
 }
@@ -139,4 +152,30 @@ aGameElement.prototype.handleKeyUp = function(key)
   this.keypressed[key] = false;
   //this.move(key);
   console.log(key);
+}
+
+aGameElement.prototype.checkCollision = function(anotherGameElement)
+{
+
+  if(this.handlesCollision)
+  {
+    if (this.x < anotherGameElement.x + anotherGameElement.width &&
+     this.x + this.width > anotherGameElement.x &&
+     this.y < anotherGameElement.y + anotherGameElement.height &&
+     this.height + this.y > anotherGameElement.y)
+     {
+       console.log("collision detected");
+        this.handleCollision(anotherGameElement);
+        anotherGameElement.handleCollision(this);
+    }
+  }
+}
+
+aGameElement.prototype.handleCollision = function(anotherGameElement)
+{
+  //call user implemented function
+  /*if(this.handlesCollision)
+  {
+    this.onCollision(anotherGameElement);
+  }*/
 }

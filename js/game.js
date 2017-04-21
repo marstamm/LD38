@@ -11,6 +11,15 @@ function startgame()
   var playerControl = new aKeyboardControler({
     gameObject: player
   });
+  player.handlesCollision = true;
+  anotherGameElement = new aGameElement({
+    w: 50, h:50, x:100, y:20, container: document.getElementById('game')
+  });
+  player.addCollider(anotherGameElement);
+  player.handleCollision = function(aGameElement)
+  {
+    this.style.backgroundColor = "green";
+  }
   console.log(player);
   game.anim();
 }
