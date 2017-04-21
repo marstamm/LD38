@@ -3,6 +3,7 @@ function aGameElement(opts)
   //console.log(this);
   //Set arguments
   this.actions = opts.actions || [];
+  this.types = opts.types || []; //Types which can be checked in Collission detection, such as "wall" or "player"
   this.DOMElement = opts.DOMElement || document.createElement("div");
   this.style = this.DOMElement.style;
 
@@ -24,19 +25,12 @@ function aGameElement(opts)
   this.accSpeed = opts.accelerationSpeed || 1;
   this._currentspeedx = 0;
   this._currentspeedy = 0;
+
   this.place = function()
   {
     //console.log("placed");
     this.DOMElement.style.left = this.x + this.DOMElement.parentNode.style.left + "px";
     this.DOMElement.style.top  = this.y + this.DOMElement.parentNode.style.top + "px";
-  }
-
-  this.collidesWith = function(anotherGameElement)
-  {
-    var thisBoundingBox = [ this.DOMElement.style.left, this.DOMElement.style.top,
-                          this.DOMElement.style.left + this.DOMElement.style.width, this.DOMElement.style.top + this.DOMElement.style.height];
-    var otherboundingBoc = [anotherGameElement.DOMElement.style.left, anotherGameElement.DOMElement.style.top,
-                          anotherGameElement.DOMElement.style.left + anotherGameElement.DOMElement.style.width, anotherGameElement.DOMElement.style.top + anotherGameElement.DOMElement.style.height];
   }
 
   this.DOMElement.style.width = this.width;
@@ -49,15 +43,19 @@ function aGameElement(opts)
 
   this.update = function()
   {
-    if(this.handlesKeyDown)
-    {
-      this.move();
-      this.place();
-    }
+    this.canMove = true;
+    var oldpos = [this.x, this.y];
+    this.move();
     for (e in this.colliders)
     {
       this.checkCollision(this.colliders[e]);
     }
+    if(!this.canMove)
+    {
+      this.x = oldpos[0];
+      this.y = oldpos[1];
+    }
+    this.place();
   };
 
 
@@ -164,7 +162,6 @@ aGameElement.prototype.checkCollision = function(anotherGameElement)
      this.y < anotherGameElement.y + anotherGameElement.height &&
      this.height + this.y > anotherGameElement.y)
      {
-       console.log("collision detected");
         this.handleCollision(anotherGameElement);
         anotherGameElement.handleCollision(this);
     }
