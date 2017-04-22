@@ -53,10 +53,11 @@ function aGameElement(opts)
     this.canMove = true;
     var oldpos = [this.x, this.y];
     this.move();
-    for (e in this.colliders)
-    {
-      this.checkCollision(this.colliders[e]);
-    }
+    if(this.handlesCollision)
+      for (e in game.gameElements)
+      {
+        this.checkCollision(game.gameElements[e]);
+      }
     if(!this.canMove)
     {
       this.x = oldpos[0];
@@ -281,8 +282,8 @@ aGameElement.prototype.handleMouseDown = function (event) {
   {
     //add offset to Event
     var translation = aCamera.getTranslation();
-    var translatetX = event.x + translation.x;
-    var translatetY = event.y + translation.y;
+    var translatetX = event.x + translation.x - 10;
+    var translatetY = event.y + translation.y - 10;
     //console.log(translatetY, translatetX);
     //console.log(event);
 

@@ -3,10 +3,10 @@ function projectile(opts)
   opts.speed = opts.speed || 10;
   opts.w = opts.w || 10;
   opts.h = opts.h || 1;
-  opts.color = opts.color ||"black",
-  opts.container = opts.container || document.getElementById('game'),
-  opts.types = opts.types || ['projectile'],
-  opts.handlesCollision = opts.handlesCollision || true
+  opts.color = opts.color ||"black";
+  opts.container = opts.container || document.getElementById('game');
+  opts.types = opts.types || ['projectile'];
+  opts.handlesCollision = opts.handlesCollision || false;
 
   this.element = new aGameElement(opts);
   this.element.targetX = opts.targetX || 0;
@@ -25,6 +25,15 @@ function projectile(opts)
     that.element.style.transform = "rotate(" + angle*180/Math.PI + "deg)";
     that.element.x += this.movementSpeed * dx/tmp;
     that.element.y += this.movementSpeed * dy/tmp;
+  }
+
+  this.element.handleCollision = function(anEnemie)
+  {
+    if(anEnemie.types.indexOf("enemie") > -1)
+    {
+      //hit object is an Enemy
+      this.remove();
+    }
   }
   return this;
 }
