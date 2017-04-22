@@ -22,7 +22,7 @@ function aGame()
       }
     this.x(x);
     this.y(y);
-    this.container.style.background = 'red';
+    this.container.style.background = 'transparent';
     return this;
   };
 

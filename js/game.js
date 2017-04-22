@@ -7,15 +7,15 @@ function startgame()
 
   game = new aGame();
 
-  game.game(50,50,document.getElementById('game'));
+  game.game(window.innerWidth,window.innerHeight,document.getElementById('game'));
 
 
   player = new aGameElement({
-    w: 5, h:5, x:window.innerWidth/2, y:window.innerHeight/2, color:"blue", container: document.getElementById('game'),
+    w: 10, h:10, x:window.innerWidth/2, y:window.innerHeight/2, color:"blue", container: document.getElementById('game'),
     handlesKeyDown: true, handlesMouseDown: true, acceleration: true, speed: 2, types: ['player'], accelerationSpeed: 1
   });
 
-
+  player.volume = 10*10;
   player.counter = 0;
   var playerControl = new aKeyboardControler({
     gameObject: player
@@ -31,11 +31,12 @@ function startgame()
     plancton.value = 1;
     plancton.addCollider(player);
   }
+  player.counter = 10;
 
   player.mouseDownAt = function(x,y)
   {
     var tmp = new projectile({
-      x:this.x, y: this.y, targetY: y, targetX: x
+      x:this.x+this.width/2, y: this.y+this.width/2, targetY: y, targetX: x
     });
   }
   //player.addCollider(anotherGameElement);
@@ -44,12 +45,14 @@ function startgame()
     color: "transparent"
   });
   textBox.style.display = 'none';
-  spawnEnemie();
   player.handleCollision = function(someGameElement)
   {
     if(someGameElement.types.indexOf("collectible") > -1)
     {
-      this.counter++;
+      this.counter+= someGameElement.value;
+      this.volume += someGameElement.value;
+      this.width = Math.sqrt(this.volume);
+      this.height= Math.sqrt(this.volume);
       console.log(this.counter);
       someGameElement.remove();
 
@@ -72,13 +75,21 @@ function startgame()
         textBox.DOMElement.innerHTML = "You evolved. You can now shoot stuff with LMB";
 
         player.handlesMouseDown = true;
-        spawnEnemie();
+        //spawnEnemie();
       }
     }
     if(someGameElement.types.indexOf("enemie") > -1)
     {
-      //TODO: Game over screen
-      console.log("Game Over");
+      if(this.width<someGameElement.width)
+      {
+        //TODO: Game over screen
+        //console.log("Game Over");
+      }
+      else {
+        this.width += Math.sqrt(someGameElement.width);
+        someGameElement.remove();
+      }
+
     }
     //this.style.backgroundColor = "green";
   };
@@ -90,36 +101,35 @@ function startgame()
   });
   console.log(player);
   game.anim();
-  createPlancton();
+  enemySpawn();
+  floatySpawn();
+  createPlanctons(player.x,player.y, 500, Infinity, 1000, 1);
 }
 
-function createPlancton(x,y,r,n)
+function createPlanctons(x,y,r,n,t,v)
 {
+  //console.log("Plankton", n);
   if(n>0)
   {
-    createPlancton(~~(Math.random()*r*2 - r), ~~(Math.random()*r*2 - r))
+    createPlancton(~~(Math.random()*r*2 - r + x), ~~(Math.random()*r*2 - r + y),v)
     window.setTimeout(function()
     {
-      createPlancton(x,y,r,n--);
-    }, Math.random(500) + 500);
+      createPlanctons(x,y,r,--n,t,v);
+    }, Math.random(t) + t);
   }
 }
 
-function createPlancton(x,y)
+function createPlancton(x,y,v)
 {
+  //console.log("Plankton created", x, v);
   var plancton = new aGameElement({
     w:1, h:1, x: x, y: y,
     color:"black", container: document.getElementById('game'), types: ['collectible', 'plancton'],
     handlesCollision: false
   });
-  plancton.value = 1;
+  plancton.value = v;
   //console.log(player);
   plancton.addCollider(player);
-}
-
-function spawnEnemie()
-{
-  new enemie({});
 }
 
 /*anotherGameElement = new aGameElement({

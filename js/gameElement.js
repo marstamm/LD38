@@ -8,8 +8,8 @@ function aGameElement(opts)
   this.style = this.DOMElement.style;
 
   this.DOMElement.style.position = "absolute";
-  this.width = opts.width || opts.w || 10;
-  this.height = opts.height || opts.h || 10;
+  this.width = opts.width || opts.w || null;
+  this.height = opts.height || opts.h || null;
   this.x      = opts.x || 0;
   this.y      = opts.y || 0;
   this.color  = opts.color || 'cyan';
@@ -35,6 +35,9 @@ function aGameElement(opts)
     {
       this.DOMElement.style.left = this.x + this.DOMElement.parentNode.style.left + "px";
       this.DOMElement.style.top  = this.y + this.DOMElement.parentNode.style.top + "px";
+      this.style.width = this.width;
+      this.style.height = this.height;
+      this.backgroundSize = Math.max(this.width, this.height);
     }
     return this;
   }
@@ -42,6 +45,9 @@ function aGameElement(opts)
   this.DOMElement.style.width = this.width;
   this.DOMElement.style.height = this.height;
   this.DOMElement.style.position = "absolute";
+  this.style.backgroundSize = (Math.max(this.width, this.height)) + "px";
+  this.style.backgroundRepeat = "no-repeat";
+  //this.DOMElement.style.backgroundImage = 'url("./pic/eye_cancer.png")';
   this.DOMElement.style.backgroundColor = this.color;
   this.container.appendChild(this.DOMElement);
   this.place();
@@ -282,8 +288,8 @@ aGameElement.prototype.handleMouseDown = function (event) {
   {
     //add offset to Event
     var translation = aCamera.getTranslation();
-    var translatetX = event.x + translation.x - 10;
-    var translatetY = event.y + translation.y - 10;
+    var translatetX = event.x + translation.x -10;
+    var translatetY = event.y + translation.y -10;
     //console.log(translatetY, translatetX);
     //console.log(event);
 

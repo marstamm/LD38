@@ -11,7 +11,7 @@ function projectile(opts)
   this.element = new aGameElement(opts);
   this.element.targetX = opts.targetX || 0;
   this.element.targetY = opts.targetY || 0;
-  this.element.originalPos = [this.element.x, this.element.y];
+  this.element.originalPos = [this.element.x + this.element.width/2, this.element.y + this.element.width/2];
   var that = this;
   this.element.move = function()
   {
