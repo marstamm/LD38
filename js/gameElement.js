@@ -13,7 +13,7 @@ function aGameElement(opts)
   this.x      = opts.x || 0;
   this.y      = opts.y || 0;
   this.color  = opts.color || 'cyan';
-
+  this.tmp    = true;
   this.handlesCollision = opts.handlesCollision || false; //pls override handleCollision
   this.colliders        = opts.colliders || [];
   this.handlesKeyDown = opts.handlesKeyDown || false;
@@ -35,6 +35,7 @@ function aGameElement(opts)
       this.DOMElement.style.left = this.x + this.DOMElement.parentNode.style.left + "px";
       this.DOMElement.style.top  = this.y + this.DOMElement.parentNode.style.top + "px";
     }
+    return this;
   }
 
   this.DOMElement.style.width = this.width;
@@ -61,6 +62,7 @@ function aGameElement(opts)
       this.y = oldpos[1];
     }
     this.place();
+    return this;
   };
 
 
@@ -80,6 +82,7 @@ function aGameElement(opts)
   }
   */
   game.registerGameElement(this);
+  return this;
 }
 
 aGameElement.prototype.move = function()
@@ -87,12 +90,14 @@ aGameElement.prototype.move = function()
   //console.log(this);
   if(this.acceleration) {
     //accelerate if key is pressed
+    //console.log(this.keypressed['up']);
     this.accelerationMovement();
-    return;
+    return this;
   }
   if(this.threeway)
   {
     this.threewayMovement();
+    return this;
   }
 
   //default mouse Handling
@@ -100,9 +105,10 @@ aGameElement.prototype.move = function()
   this.y += this.keypressed['down'] ? this.movementSpeed : 0;
   this.x -= this.keypressed['left'] ? this.movementSpeed : 0;
   this.x += this.keypressed['right'] ? this.movementSpeed : 0;
+  return this;
 }
 
-aGameElement.prototype.threewayMovement = function()
+/*aGameElement.prototype.threewayMovement = function()
 {
   //ToDo.
   this._currentspeedy -= this.keypressed['up'] ? this.accSpeed : 0;
@@ -111,9 +117,10 @@ aGameElement.prototype.threewayMovement = function()
   this._currentspeedx += this.keypressed['right'] ? this.accSpeed : 0;
 
   //decelerate if no key is pressed
-  var deccelerationSpeed = this.accSpeed/2;
+  var deccelerationSpeed = 0;
   if(!(this.keypressed['up'] || this.keypressed['down']))
   {
+    console.log("decelerate");
     if(this._currentspeedy > 0)
     {
       this._currentspeedy = Math.max(0, this._currentspeedy - deccelerationSpeed);
@@ -145,7 +152,7 @@ aGameElement.prototype.threewayMovement = function()
   //console.log(this._currentspeedx)
   return;
 }
-
+*/
 aGameElement.prototype.accelerationMovement = function()
 {
   this._currentspeedy -= this.keypressed['up'] ? this.accSpeed : 0;
@@ -154,9 +161,11 @@ aGameElement.prototype.accelerationMovement = function()
   this._currentspeedx += this.keypressed['right'] ? this.accSpeed : 0;
 
   //decelerate if no key is pressed
-  var deccelerationSpeed = this.accSpeed/2;
-  if(!(this.keypressed['up'] || this.keypressed['down']))
+  var deccelerationSpeed = this.accSpeed/10;
+  //console.log(this.keypressed['up']);
+  if((!this.keypressed['up'] && !this.keypressed['down']))
   {
+    //console.log("decelerate");
     if(this._currentspeedy > 0)
     {
       this._currentspeedy = Math.max(0, this._currentspeedy - deccelerationSpeed);
@@ -177,6 +186,19 @@ aGameElement.prototype.accelerationMovement = function()
       this._currentspeedx = Math.min(0, this._currentspeedx + deccelerationSpeed);
     }
   }
+  /*if(Math.abs(this._currentspeedx) >= this.movementSpeed || Math.abs(this._currentspeedy) >= this.movementSpeed)
+  {
+    console.log("maximum speed");
+      var that = this;
+      new aParticleGenerator({
+        r:5,
+        x: that.x,
+        y: that.y,
+        color: that.color,
+        duration: 0.1,
+        numberOfParticles: 10
+      });
+  }*/
 
   //Clamp speed
   this._currentspeedy = Math.max(-this.movementSpeed, Math.min(this._currentspeedy, this.movementSpeed))
@@ -186,28 +208,30 @@ aGameElement.prototype.accelerationMovement = function()
   this.y += this._currentspeedy;
   this.x += this._currentspeedx;
   //console.log(this._currentspeedx)
-  return;
+  return this;
 }
 
 aGameElement.prototype.handleKeyDown = function(key)
 //Handles 4-Way control
 {
   if(!this.handlesKeyDown || key == undefined)
-    return;
+    return this;
 
   this.keypressed[key] = true;
   //this.move(key);
-  console.log(key);
+  //console.log(key);
+  return this;
 }
 aGameElement.prototype.handleKeyUp = function(key)
 //Handles 4-Way control
 {
   if(!this.handlesKeyDown || key == undefined)
-    return;
+    return this;
 
   this.keypressed[key] = false;
   //this.move(key);
-  console.log(key);
+  //console.log(key);
+  return this;
 }
 
 aGameElement.prototype.checkCollision = function(anotherGameElement)
@@ -225,6 +249,7 @@ aGameElement.prototype.checkCollision = function(anotherGameElement)
         anotherGameElement.handleCollision(this);
     }
   }
+  return this;
 }
 
 aGameElement.prototype.handleCollision = function(anotherGameElement)
@@ -234,4 +259,18 @@ aGameElement.prototype.handleCollision = function(anotherGameElement)
   {
     this.onCollision(anotherGameElement);
   }*/
+  return this;
 }
+
+aGameElement.prototype.remove = function () {
+  this.style.display = 'none';
+  this.DOMElement.parentNode.removeChild(this.DOMElement);
+  this.x = Infinity;
+  this.y = Infinity;
+  return this;
+};
+
+
+aGameElement.prototype.angularMovement = function (key) {
+
+};

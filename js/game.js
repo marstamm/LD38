@@ -1,31 +1,70 @@
 var game;
+var player;
+
 function startgame()
 {
 
   game = new aGame();
+
+
   game.game(50,50,document.getElementById('game'));
-  var player = new aGameElement({
-    w: 25, h:10, x:10, y:20, color:"blue", container: document.getElementById('game'),
-    handlesKeyDown: true, acceleration: true, speed: 10, types: ['player']
+  player = new aGameElement({
+    w: 5, h:5, x:window.innerWidth/2, y:window.innerHeight/2, color:"blue", container: document.getElementById('game'),
+    handlesKeyDown: true, acceleration: true, speed: 2, types: ['player'], accelerationSpeed: 1
   });
+  player.counter = 0;
   var playerControl = new aKeyboardControler({
     gameObject: player
   });
   player.handlesCollision = true;
-  anotherGameElement = new aGameElement({
-    w: 50, h:50, x:100, y:20, container: document.getElementById('game'), types: ['wall']
-  });
-  player.addCollider(anotherGameElement);
-  player.handleCollision = function(aGameElement)
+  for (var i = 0; i < 100; i++)
   {
-    if(aGameElement.types.indexOf("wall") > -1)
+    var plancton = new aGameElement({
+      w:1, h:1, x: ~~(Math.random()*250 + 250), y: ~~(Math.random()*250 + 250),
+      color:"black", container: document.getElementById('game'), types: ['collectible'],
+      handlesCollision: true
+    });
+    plancton.value = 1;
+    plancton.addCollider(player);
+  }
+  //player.addCollider(anotherGameElement);
+  var textBox = new aGameElement({
+    w: 5, h:5, x:window.innerWidth/2, y:window.innerHeight/2, container: document.getElementById('game'),
+    color: "transparent"
+  });
+  textBox.style.display = 'none';
+
+  player.handleCollision = function(someGameElement)
+  {
+    if(someGameElement.types.indexOf("collectible") > -1)
     {
-      this.canMove = false;
+      this.counter++;
+      console.log(this.counter);
+      someGameElement.remove();
     }
-    this.style.backgroundColor = "green";
+
+    if(this.counter == 10)
+    {
+      this.style.backgroundColor = "green";
+      textBox.style.display = "";
+      textBox.x = this.x;
+      textBox.y = this.y;
+      textBox.DOMElement.innerHTML = "You are now an multi-cellular thingy";
+    }
+
+    if(this.counter == 20)
+    {
+      this.style.backgroundColor = "green";
+      textBox.style.display = "";
+      textBox.x = this.x;
+      textBox.y = this.y;
+      textBox.DOMElement.innerHTML = "You evolved. You can now shoot stuff with LMB";
+
+      player.handleMouseDown = true;
+    }
+    //this.style.backgroundColor = "green";
   };
 
-  var pgen = aParticleGenerator({x:50,y:100, r:10, duration: 1});
   var aCamera = new camera({
     center: player,
     follow: true,
@@ -33,5 +72,24 @@ function startgame()
   });
   console.log(player);
   game.anim();
-
+  createPlancton();
 }
+
+function createPlancton()
+{
+  var plancton = new aGameElement({
+    w:1, h:1, x: ~~(Math.random()*250 + 250), y: ~~(Math.random()*250 + 250),
+    color:"black", container: document.getElementById('game'), types: ['collectible'],
+    handlesCollision: true
+  });
+  plancton.value = 1;
+  //console.log(player);
+  plancton.addCollider(player);
+  window.setTimeout(createPlancton, Math.random(500) + 500);
+}
+
+/*anotherGameElement = new aGameElement({
+  w: 50, h:50, x:100, y:20, container: document.getElementById('game'), types: ['wall']
+});*/
+
+//var pgen = aParticleGenerator({x:50,y:100, r:10, duration: 1});

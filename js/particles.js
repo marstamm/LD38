@@ -4,7 +4,7 @@ function aParticleGenerator(opts)
   this.x      = opts.x || 0;
   this.y      = opts.y || 0;
   this.color  = opts.color || 'black';
-
+  //console.log(opts);
   this.speed  = opts.speed || 10;
   this.duration = opts.duration * 60 || Infinity;
   this.numberOfParticles = opts.numberOfParticles || 100;
@@ -16,16 +16,17 @@ function aParticleGenerator(opts)
   var arrParticles = new Array(this.numberOfParticles);
   this.createParticle
   {
+    var that = this;
     for (var i = 0; i < this.numberOfParticles; i++)
     {
       setTimeout(function() {
         this.arrParticles = new particle({
-          x: this.x,
-          y: this.y,
-          color: this.color,
-          radius: this.radius,
-          duration: this.duration,
-          speed: this.speed
+          x: that.x,
+          y: that.y,
+          color: that.color,
+          radius: that.radius,
+          duration: that.duration,
+          speed: that.speed
         });
       }
       , Math.random()*500);
@@ -52,7 +53,7 @@ function particle(opts)
   });
   this.reset = function()
   {
-    console.log("reset");
+    //console.log("reset");
     if(this.gameElement.age > this.duration)
     {
       this.alive = false;
@@ -85,6 +86,6 @@ function particle(opts)
       }
     }
   }
-  console.log(this);
+  //console.log(this);
   this.reset();
 }
