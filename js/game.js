@@ -30,11 +30,12 @@ function startgame()
     });
     plancton.value = 1;
     plancton.addCollider(player);
-  }
-  player.counter = 10;
+  };
 
   player.mouseDownAt = function(x,y)
   {
+    this.counter--;
+    this.DOMElement.innerHTML = ""+ this.counter;
     var tmp = new projectile({
       x:this.x+this.width/2, y: this.y+this.width/2, targetY: y, targetX: x
     });
@@ -44,49 +45,56 @@ function startgame()
     w: window.innerWidth*0.33, h:window.innerHeight*0.33, x:window.innerWidth/2, y:window.innerHeight/2, container: document.getElementById('game'),
     color: "transparent"
   });
-  textBox.style.display = 'none';
+
+
+  ///////////////////////////Tutorial//////////////////////////////////
+  player.counter = 0;
+  player.tutorial = 0;
+  textBox.style.display = "";
+  textBox.x = this.x;
+  textBox.y = this.y;
+  textBox.DOMElement.innerHTML = "Well Hello there. You are an Asprin.<br>" +
+                                 "First collect something to shoot with.";
   player.handleCollision = function(someGameElement)
   {
     if(someGameElement.types.indexOf("collectible") > -1)
     {
       this.counter+= someGameElement.value;
+      this.DOMElement.innerHTML = "" + this.counter;
       this.volume += someGameElement.value;
       this.width = Math.sqrt(this.volume);
       this.height= Math.sqrt(this.volume);
       console.log(this.counter);
       someGameElement.remove();
 
-
-      if(this.counter == 10)
+      if(this.counter >= 10 && this.tutorial <1)
       {
-        this.style.backgroundColor = "green";
-        textBox.style.display = "";
-        textBox.x = this.x;
-        textBox.y = this.y;
-        textBox.DOMElement.innerHTML = "You are now an multi-cellular thingy";
+        this.tutorial++;
+        textBox.DOMElement.innerHTML = "Oh no! The cold viruses are here!<br>"+
+                                      "Quick, shoot them down before they can hurt you!";
+        enemySpawn(1000);
       }
 
-      if(this.counter == 20)
+      if(this.counter > 50 && this.tutorial<2)
       {
-        this.style.backgroundColor = "green";
-        textBox.style.display = "";
-        textBox.x = this.x;
-        textBox.y = this.y;
-        textBox.DOMElement.innerHTML = "You evolved. You can now shoot stuff with LMB";
+        this.tutorial++;
+        textBox.DOMElement.innerHTML = "And thats it! Keep eating and stay alive.";
 
-        player.handlesMouseDown = true;
-        //spawnEnemie();
+        /*floaty({lvl: 10,
+              y: this.x+50, x: this.x});*/
+        //enemySpawn();
       }
     }
     if(someGameElement.types.indexOf("enemie") > -1)
     {
       if(this.width<someGameElement.width)
       {
-        //TODO: Game over screen
-        //console.log("Game Over");
+        this.remove();
       }
       else {
-        this.width += Math.sqrt(someGameElement.width);
+        this.volume += Math.sqrt(someGameElement.width*someGameElement.height);
+        this.width = Math.sqrt(this.volume);
+        this.height = Math.sqrt(this.volume);
         someGameElement.remove();
       }
 
@@ -101,8 +109,8 @@ function startgame()
   });
   console.log(player);
   game.anim();
-  enemySpawn();
-  floatySpawn();
+  //enemySpawn();
+  //floatySpawn();
   createPlanctons(player.x,player.y, 500, Infinity, 1000, 1);
 }
 
@@ -127,7 +135,7 @@ function createPlancton(x,y,v)
     color:"black", container: document.getElementById('game'), types: ['collectible', 'plancton'],
     handlesCollision: false
   });
-  plancton.value = v;
+  plancton.value = 1;
   //console.log(player);
   plancton.addCollider(player);
 }

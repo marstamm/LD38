@@ -1,26 +1,27 @@
 function enemie(opts)
 {
+  var distanceToPlayer = player.width * 10;
   this.x = opts.x || Math.random()*distanceToPlayer + distanceToPlayer;
   this.y = opts.y || Math.random()*distanceToPlayer + distanceToPlayer
   this.lvl = opts.lvl || 1;
   this.target = opts.target || player;
-  this.hp = opts.hp || this.lvl;
+  this.hp = opts.hp || 1;
   console.log(this.lvl);
   var distanceToPlayer = 100;
   var stdWidth = 5;
   this.element = new aGameElement({
-    x: this.target.x + this.x,
-    y: this.target.y + this.y,
+    x: this.x,
+    y: this.y,
     w: stdWidth * this.lvl,
     h: stdWidth/3 * this.lvl,
     color: "transparent",
     handlesCollision: true,
-    speed: player.width/this.lvl,
+    speed: this.lvl*0.1,
     types: ["enemie"]
   });
   this.element.volume = this.element.width * this.element.height;
   this.element.style.backgroundImage = "url('./pic/enemy01.png')";
-  this.element.style.transform = "rotate(" + Math.random()*2-1*180/Math.PI + "deg)";
+  this.element.style.transform = "rotate(" + (Math.random()*2-1)*180/Math.PI + "deg)";
   console.log(this);
   var that = this;
   this.element.move            = function()
@@ -28,12 +29,12 @@ function enemie(opts)
     if(that.hp>0)
     {
 
-      var dx = player.x - this.x;
-      var dy = player.y - this.y;
+      var dx = (player.x+player.width/2) - (this.x+this.width/2);
+      var dy = (player.y+player.height/2) - (this.y+this.height/2);
 
       //Player near self?
-      if((Math.abs(dx)+Math.abs(dy) < player.width*10) || this.aggro)
-      {
+      //if((Math.abs(dx)+Math.abs(dy) < player.width*10) || this.aggro)
+      //{
         this.aggro = true;
         var tmp = Math.max(Math.abs(dx),Math.abs(dy));
         var angle = Math.atan(dy/dx);
@@ -43,21 +44,21 @@ function enemie(opts)
         }
         //console.log("angle",angle,angle*180/Math.PI);
 
-        if(that.lvl*stdWidth > player.width)
-        {
+        //if(that.lvl*stdWidth > player.width)
+        //{
           this.style.transform = "rotate(" + angle*180/Math.PI + "deg)";
           //console.log("angle",angle,angle*180/Math.PI);
           this.x += this.movementSpeed * dx/tmp;
           this.y += this.movementSpeed * dy/tmp;
-        }
+        /*}
         else
         {
           this.style.transform = "rotate(" + angle*180/Math.PI+180 + "deg)";
           //console.log("angle",angle,angle*180/Math.PI);
           this.x -= this.movementSpeed * dx/tmp;
           this.y -= this.movementSpeed * dy/tmp;
-        }
-      }
+        }*/
+      //}
 
 
     }
