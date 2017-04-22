@@ -11,7 +11,7 @@ function startgame()
   game.game(50,50,document.getElementById('game'));
   player = new aGameElement({
     w: 5, h:5, x:window.innerWidth/2, y:window.innerHeight/2, color:"blue", container: document.getElementById('game'),
-    handlesKeyDown: true, handlesMouseDown: false, acceleration: true, speed: 2, types: ['player'], accelerationSpeed: 1
+    handlesKeyDown: true, handlesMouseDown: true, acceleration: true, speed: 2, types: ['player'], accelerationSpeed: 1
   });
   player.counter = 0;
   var playerControl = new aKeyboardControler({
@@ -69,7 +69,7 @@ function startgame()
       textBox.DOMElement.innerHTML = "You evolved. You can now shoot stuff with LMB";
 
       player.handlesMouseDown = true;
-      spawnEnemie();
+      enemySpawnSpawen();
     }
     //this.style.backgroundColor = "green";
   };
@@ -95,11 +95,6 @@ function createPlancton()
   //console.log(player);
   plancton.addCollider(player);
   window.setTimeout(createPlancton, Math.random(500) + 500);
-}
-
-function spawnEnemie()
-{
-  
 }
 
 /*anotherGameElement = new aGameElement({

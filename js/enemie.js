@@ -19,8 +19,8 @@ function enemie(opts)
   var that = this;
   this.element.move            = function()
   {
-    var dx = player.x - this.x;
-    var dy = player.y - this.y;
+    var dx = player.x+player.width/2 - this.x;
+    var dy = player.y+player.height/2 - this.y;
     var tmp = Math.max(Math.abs(dx),Math.abs(dy));
     var angle = Math.atan(dy/dx);
     this.style.transform = "rotate(" + angle*180/Math.PI + "deg)";
