@@ -53,9 +53,10 @@ function aGameElement(opts)
     this.canMove = true;
     var oldpos = [this.x, this.y];
     this.move();
-    for (e in this.colliders)
+    if(this.handlesCollision)
+    for (e in game.gameElements)
     {
-      this.checkCollision(this.colliders[e]);
+      this.checkCollision(game.gameElements[e]);
     }
     if(!this.canMove)
     {

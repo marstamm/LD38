@@ -8,9 +8,9 @@ function startgame()
   game = new aGame();
 
 
-  game.game(50,50,document.getElementById('game'));
+  game.game(window.innerWidth,window.innerHeight,document.getElementById('game'));
   player = new aGameElement({
-    w: 5, h:5, x:window.innerWidth/2, y:window.innerHeight/2, color:"blue", container: document.getElementById('game'),
+    w: 20, h:20, x:window.innerWidth/2, y:window.innerHeight/2, color:"blue", container: document.getElementById('game'),
     handlesKeyDown: true, handlesMouseDown: true, acceleration: true, speed: 2, types: ['player'], accelerationSpeed: 1
   });
   player.counter = 0;
@@ -28,7 +28,8 @@ function startgame()
     plancton.value = 1;
     plancton.addCollider(player);
   }
-
+  //enemySpawnSpawen();
+  enemie({});
   player.mouseDownAt = function(x,y)
   {
     var tmp = new projectile({
@@ -69,7 +70,7 @@ function startgame()
       textBox.DOMElement.innerHTML = "You evolved. You can now shoot stuff with LMB";
 
       player.handlesMouseDown = true;
-      enemySpawnSpawen();
+
     }
     //this.style.backgroundColor = "green";
   };
