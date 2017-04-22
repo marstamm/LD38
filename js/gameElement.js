@@ -20,6 +20,7 @@ function aGameElement(opts)
   this.container = opts.container || document.getElementById('game');
   this.keypressed = {};
   this.movementSpeed = opts.speed || 10;
+  this.handlesMouseDown = opts.handlesMouseDown || false;
 
   this.acceleration = opts.acceleration || false;
   this.accSpeed = opts.accelerationSpeed || 1;
@@ -272,5 +273,24 @@ aGameElement.prototype.remove = function () {
 
 
 aGameElement.prototype.angularMovement = function (key) {
+};
 
+
+aGameElement.prototype.handleMouseDown = function (event) {
+  if(this.handlesMouseDown)
+  {
+    //add offset to Event
+    var translation = aCamera.getTranslation();
+    var translatetX = event.x + translation.x;
+    var translatetY = event.y + translation.y;
+    //console.log(translatetY, translatetX);
+    //console.log(event);
+
+    this.mouseDownAt(translatetX, translatetY);
+  }
+};
+
+aGameElement.prototype.mouseDownAt = function (x,y) {
+  //to implement by user
+  return this;
 };

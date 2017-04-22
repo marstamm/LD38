@@ -9,6 +9,11 @@ function camera (opts)
   var tmp = 0;
   this.context = opts.context || document.getElementById('game');
   var that = this;
+  this.getTranslation = function()
+  {
+    return {x: this.center.x - this.baseOffsetx,
+            y: this.center.y - this.baseOffsety};
+  }
   this.updateCamera = function()
   {
     //console.log("möp");

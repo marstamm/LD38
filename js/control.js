@@ -13,12 +13,15 @@ function aKeyboardControler(opts)
   this.lut[this.right] = "right";
   document.addEventListener('keydown', (event) =>
       {
-        console.log(event.key);
         this.gameObject.handleKeyDown(this.lut[event.key]);
       });
   document.addEventListener('keyup', (event) =>
        {
-         console.log(event.key);
          this.gameObject.handleKeyUp(this.lut[event.key]);
        });
+
+  document.addEventListener('mousedown', (event) =>
+      {
+          this.gameObject.handleMouseDown(event);
+      });
 }
