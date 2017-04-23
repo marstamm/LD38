@@ -10,15 +10,19 @@ function startgame()
 
   game.game(window.innerWidth,window.innerHeight,document.getElementById('game'));
   player = new aGameElement({
-    w: 20, h:20, x:window.innerWidth/2, y:window.innerHeight/2, color:"blue", container: document.getElementById('game'),
+    w: 20, h:20, x:window.innerWidth/2, y:window.innerHeight/2, color:"transparent", container: document.getElementById('game'),
     handlesKeyDown: true, handlesMouseDown: true, acceleration: true, speed: 2, types: ['player'], accelerationSpeed: 1
   });
   player.counter = 0;
+  player.style.backgroundRepeat = "no-repeat";
+  player.style.backgroundImage = "url('pic/enemy01.png')";
+  player.style.backgroundSize = "contain";
+  player.style.backgroundImage = "url('pic/player.png')";
   var playerControl = new aKeyboardControler({
     gameObject: player
   });
   player.handlesCollision = true;
-  for (var i = 0; i < 100; i++)
+  /*for (var i = 0; i < 100; i++)
   {
     var plancton = new aGameElement({
       w:1, h:1, x: ~~(Math.random()*250 + 250), y: ~~(Math.random()*250 + 250),
@@ -27,9 +31,9 @@ function startgame()
     });
     plancton.value = 1;
     plancton.addCollider(player);
-  }
-  //enemySpawnSpawen();
-  enemie({});
+  }*/
+  enemySpawnSpawen(1000);
+  //enemie({});
   player.mouseDownAt = function(x,y)
   {
     var tmp = new projectile({
@@ -45,7 +49,7 @@ function startgame()
 
   player.handleCollision = function(someGameElement)
   {
-    if(someGameElement.types.indexOf("collectible") > -1)
+    /*if(someGameElement.types.indexOf("collectible") > -1)
     {
       this.counter++;
       console.log(this.counter);
@@ -71,6 +75,14 @@ function startgame()
 
       player.handlesMouseDown = true;
 
+    }*/
+    //console.log("collsion");
+    if(someGameElement.types.indexOf("enemy") > -1)
+    {
+      this.remove();
+      //TODO: Game over screen
+      console.log("game Over");
+      gameOver(this.counter);
     }
     //this.style.backgroundColor = "green";
   };
@@ -82,7 +94,7 @@ function startgame()
   });
   console.log(player);
   game.anim();
-  createPlancton();
+  //createPlancton();
 }
 
 function createPlancton()

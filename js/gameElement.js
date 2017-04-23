@@ -239,7 +239,7 @@ aGameElement.prototype.handleKeyUp = function(key)
 aGameElement.prototype.checkCollision = function(anotherGameElement)
 {
 
-  if(this.handlesCollision)
+  if(this.handlesCollision && !(this === anotherGameElement))
   {
     //TODO: Check form wich side the object collides
     if (this.x < anotherGameElement.x + anotherGameElement.width &&

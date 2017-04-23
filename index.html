@@ -10,30 +10,49 @@
   <script src="./js/enemie.js"></script>
   <script src="./js/floaty_float.js"></script>
   <script src="./js/camera.js"></script>
-
+  <script src="./js/tutorial.js"></script>
   <script src="./js/game.js"></script>
-  <!--<style>
-    .game {
+  <style>
+    html,body{ margin:0; padding:0; height:100%; width:100%; }
+    #container {
       overflow: hidden;
     }
-    #gameOver {
-      margin-left: 45%;sd
+    .tutorial {
+      /*margin-left: 45%;*/
       margin-top: 10;
-      font-size: 80px;
+      font-size: 24px;
+      text-align:center;
     }
-  </style>-->
+  </style>
 </head>
 
-<body style="background-image: url('pic/eye_cancer.png')">
-  <!--<div id="gameOver" style="width: 100%; height: 100%; overflow: hidden; display:none; color:'red'">
-      Game Over!
-  </div>-->
-  <div id ="container" tyle="width: 100%; height: 100%; overflow: hidden">
-    <div id="counter" style="position: absulute"></div>
+<!-- background-image: url('pic/eye_cancer.png') -->
+<body style="margin: 0; height: 100%;">
+  <div id="tutorial01" class="tutorial" style="width: 100%; height: 100%; overflow: hidden; color:'red'">
+    Welcome in the World of Bacteria.<br>
+    Here, survival is everything.<br>
+    <button type="button" onclick="tutorial02()">Bring it on!</button>
+    <br>
+    <img src="pic/petri_dish.png" style="height: 50%; flex: 1 1 auto;">
+  </div>
+
+  <div id="tutorial02" class="tutorial" style="width: 100%; height: 100%; overflow: hidden; display: none;">
+    This is you in bacteria form.<br>
+    Move using WASD and shoot at other cells with your mouse.<br>
+    <button type="button" onclick="tutorial03()">Let's go!</button>
+    <br>
+    <img src="pic/player.png" style="height: 50%; flex: 1 1 auto;">
+  </div>
+  <div id="gameOver" class="tutorial" style="width: 100%; height: 100%; overflow: hidden; display:none;">
+      Unfortunately, you died. But you managed to take x others with you.<br>
+      <button type="button" onclick="location.reload()">Try again?</button>
+  </div>
+  <div id ="container" tyle="min-height: 100%; width: 100vw; height: 100vh; overflow: hidden; position: fixed; display: none">
+    <div id="counter" style="position: absulute; color: white">0</div>
     <div id="game" style=""></div>
   </div>
 </body>
 <script>
-  window.onload= startgame();
+  window.onload= tutorial();
 </script>
 </html>
