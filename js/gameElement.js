@@ -280,10 +280,11 @@ aGameElement.prototype.angularMovement = function (key) {
 aGameElement.prototype.handleMouseDown = function (event) {
   if(this.handlesMouseDown)
   {
+    console.log(event);
     //add offset to Event
     var translation = aCamera.getTranslation();
-    var translatetX = event.x + translation.x;
-    var translatetY = event.y + translation.y;
+    var translatetX = event.clientX + translation.x;
+    var translatetY = event.clientY + translation.y;
     //console.log(translatetY, translatetX);
     //console.log(event);
 
