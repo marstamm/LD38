@@ -36,8 +36,9 @@ function startgame()
   //enemie({});
   player.mouseDownAt = function(x,y)
   {
+    shooting[Math.floor(Math.random()*shooting.length)].play();
     var tmp = new projectile({
-      x:this.x, y: this.y, targetY: y, targetX: x
+      x:this.x+this.width/2, y: this.y+this.height/2, targetY: y, targetX: x
     });
   }
   //player.addCollider(anotherGameElement);

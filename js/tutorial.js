@@ -1,6 +1,13 @@
+var explosions = [];
+var shooting = [];
 function tutorial()
 {
-
+  //Load audio files
+  explosions.push(new Audio('sfx/explosion01.wav'));
+  explosions.push(new Audio('sfx/explosion02.wav'));
+  explosions.push(new Audio('sfx/explosion03.wav'));
+  explosions.push(new Audio('sfx/explosion04.wav'));
+  shooting.push(new Audio('sfx/shoot01.wav'));
 }
 function tutorial02()
 {

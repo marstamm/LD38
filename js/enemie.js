@@ -56,6 +56,7 @@ function enemie(opts)
       that.hp--;
       if(that.hp<1)
       {
+        explosions[Math.floor(Math.random()*explosions.length)].play();
         var part = new aParticleGenerator({
           x:this.x+this.width, y: this.y+this.height, r: this.height, numberOfParticles: 20, duration: 1
         });
