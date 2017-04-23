@@ -9,7 +9,9 @@ function aGameElement(opts)
 
   this.DOMElement.style.position = "absolute";
   this.width = opts.width || opts.w || 10;
+  this.width = this.width*3;
   this.height = opts.height || opts.h || 10;
+  this.height = this.height*3;
   this.x      = opts.x || 0;
   this.y      = opts.y || 0;
   this.color  = opts.color || 'cyan';
@@ -19,11 +21,11 @@ function aGameElement(opts)
   this.handlesKeyDown = opts.handlesKeyDown || false;
   this.container = opts.container || document.getElementById('game');
   this.keypressed = {};
-  this.movementSpeed = opts.speed || 10;
+  this.movementSpeed = opts.speed*3 || 10;
   this.handlesMouseDown = opts.handlesMouseDown || false;
 
   this.acceleration = opts.acceleration || false;
-  this.accSpeed = opts.accelerationSpeed || 1;
+  this.accSpeed = opts.accelerationSpeed*2 || 1;
   this._currentspeedx = 0;
   this._currentspeedy = 0;
   this.age = 0;

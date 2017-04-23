@@ -1,13 +1,12 @@
 function projectile(opts)
 {
   opts.speed = opts.speed || 10;
-  opts.w = opts.w || 10;
-  opts.h = opts.h || 1;
+  opts.w = opts.w/2 || 10;
+  opts.h = opts.h/2 || 1;
   opts.color = opts.color ||"black",
   opts.container = opts.container || document.getElementById('game'),
   opts.types = opts.types || ['projectile'],
   opts.handlesCollision = opts.handlesCollision || true
-
   this.element = new aGameElement(opts);
   this.element.targetX = opts.targetX || 0;
   this.element.targetY = opts.targetY || 0;

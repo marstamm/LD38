@@ -14,7 +14,7 @@ function enemie(opts)
     h: stdHeight * 5/this.lvl,
     color: "transparent",
     handlesCollision: true,
-    speed: Math.min(this.lvl, player.movementSpeed),
+    speed: Math.min(this.lvl, player.movementSpeed/3),
     types: ["enemie", "enemy"]
   });
   this.element.style.backgroundRepeat = "no-repeat";

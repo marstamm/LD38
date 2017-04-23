@@ -37,6 +37,7 @@ function startgame()
   player.mouseDownAt = function(x,y)
   {
     shooting[Math.floor(Math.random()*shooting.length)].play();
+    console.log(this.x);
     var tmp = new projectile({
       x:this.x+this.width/2, y: this.y+this.height/2, targetY: y, targetX: x
     });
